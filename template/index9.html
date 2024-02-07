@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Responsive Bootstrap with 3 Divs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.17/dist/css/splide.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+
+    <style type="text/css">
+      /* Set height of divs */
+      .qr-code {
+        height: 250px;
+      }
+      .div25 {
+        height: calc(45vh);
+        /* background-color: #ffffff; */
+      }
+      .div50 {
+        height: calc(55vh);
+        background-color: #ffffff;
+        padding-right: 5px !important;
+        padding-left: 5px !important;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        text-align: center;
+        overflow: hidden;
+      }
+      /* Make container full screen */
+      html,
+      body,
+      .container-fluid {
+        height: 100%;
+      }
+      .logo {
+        max-width: 100%;
+        max-height: 80%;
+        margin: auto;
+      }
+      .inner-div {
+        height: 100%;
+        /* background-color: #ffffff; */
+      }
+
+      .grid {
+        width: 100%;
+        /* height: 300px; */
+        /* margin: 10px auto 10px auto; */
+        perspective: 500px;
+      }
+      /* .grid img {
+            width: 205px;
+            height: 130px;
+            display: block;
+            float: left;
+          } */
+
+      .animate {
+        font: 12px Montserrat;
+        text-transform: uppercase;
+        background: rgb(0, 100, 0);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .animate:hover {
+        background: rgb(0, 75, 0);
+      }
+      .image_anim {
+        padding: 10px !important;
+        /* width: 32%; */
+
+        width: 230px; /* You can set the dimensions to whatever you want */
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .countdown {
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 15px;
+        justify-content: center;
+      }
+      .countdown .bloc-time {
+        float: left;
+        margin-right: 15px;
+        text-align: center;
+      }
+      .countdown .bloc-time:last-child {
+        margin-right: 0;
+      }
+      .countdown .count-title {
+        display: block;
+        margin-bottom: 15px;
+        font: normal 0.94em "Lato";
+        color: #1a1a1a;
+        text-transform: uppercase;
+      }
+      .countdown .figure {
+        position: relative;
+        float: left;
+        height: 45px;
+        width: 40px;
+        margin-right: 2px;
+        background-color: #fff;
+        border-radius: 8px;
+        -moz-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
+          inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
+        -webkit-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
+          inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
+        box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
+          inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
+      }
+      .countdown .figure:last-child {
+        margin-right: 0;
+      }
+      .countdown .figure > span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        /* font: normal 5.94em/107px "Lato"; */
+        font: normal 3.5em/45px "Lato";
+
+        font-weight: 700;
+        color: #de4848;
+      }
+      .countdown .figure .top:after,
+      .countdown .figure .bottom-back:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      .countdown .figure .top {
+        z-index: 3;
+        background-color: #f7f7f7;
+        transform-origin: 50% 100%;
+        -webkit-transform-origin: 50% 100%;
+        -moz-border-radius-topleft: 10px;
+        -webkit-border-top-left-radius: 10px;
+        border-top-left-radius: 10px;
+        -moz-border-radius-topright: 10px;
+        -webkit-border-top-right-radius: 10px;
+        border-top-right-radius: 10px;
+        -moz-transform: perspective(200px);
+        -ms-transform: perspective(200px);
+        -webkit-transform: perspective(200px);
+        transform: perspective(200px);
+      }
+      .countdown .figure .bottom {
+        z-index: 1;
+      }
+      .countdown .figure .bottom:before {
+        content: "";
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+      .countdown .figure .bottom-back {
+        z-index: 2;
+        top: 0;
+        height: 50%;
+        overflow: hidden;
+        background-color: #f7f7f7;
+        -moz-border-radius-topleft: 10px;
+        -webkit-border-top-left-radius: 10px;
+        border-top-left-radius: 10px;
+        -moz-border-radius-topright: 10px;
+        -webkit-border-top-right-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      .countdown .figure .bottom-back span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .countdown .figure .top,
+      .countdown .figure .top-back {
+        height: 50%;
+        overflow: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+      .countdown .figure .top-back {
+        z-index: 4;
+        bottom: 0;
+        background-color: #fff;
+        -webkit-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+        -moz-transform: perspective(200px) rotateX(180deg);
+        -ms-transform: perspective(200px) rotateX(180deg);
+        -webkit-transform: perspective(200px) rotateX(180deg);
+        transform: perspective(200px) rotateX(180deg);
+        -moz-border-radius-bottomleft: 10px;
+        -webkit-border-bottom-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        -moz-border-radius-bottomright: 10px;
+        -webkit-border-bottom-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+      .countdown .figure .top-back span {
+        position: absolute;
+        top: -100%;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+
+      <audio
+        src="https://adv.businesscloud.xyz/proxy_server/template/healing.mp3"
+        id="sound"
+        preload="auto"
+        autoplay
+        hidden
+        loop
+      ></audio>
+      <div class="row" style="padding-top: 2rem; background-color: #e2136e;">
+        <div class="col-sm-12 div25" >
+          <div class="col-xs-12 inner-div">
+            <h1 style="color: white;font-style: italic; font-weight: 600; font-size: 3rem; margin-bottom: 1rem; margin-top: 2rem;">অভিনন্দন </h1>
+            <img
+              src="https://adv.businesscloud.xyz/proxy_server/template/qrcode.png"
+              class="image-fluid qr-code img-thumbnail img-responsive"
+            />
+            <!-- <h1> </h1> -->
+            <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;line-height: 1.5;">
+              <p style="color: white;font-style: italic; font-weight: 600; font-size: 3rem;">ফোনের ক্যামেরা দিয়ে <br> QR টি স্ক্যান করুন</p>
+            </div>
+            
+            <div class="countdown" style="margin-left: 15rem;" >
+              <div class="bloc-time hours" data-init-value="0">
+                <!-- <span class="count-title">Hours</span> -->
+
+                <div class="figure hours hours-1">
+                  <span class="top">2</span>
+                  <span class="top-back">
+                    <span>2</span>
+                  </span>
+                  <span class="bottom">2</span>
+                  <span class="bottom-back">
+                    <span>2</span>
+                  </span>
+                </div>
+
+                <div class="figure hours hours-2">
+                  <span class="top">4</span>
+                  <span class="top-back">
+                    <span>4</span>
+                  </span>
+                  <span class="bottom">4</span>
+                  <span class="bottom-back">
+                    <span>4</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="bloc-time min" data-init-value="0">
+                <!-- <span class="count-title">Minutes</span> -->
+
+                <div class="figure min min-1">
+                  <span class="top">0</span>
+                  <span class="top-back">
+                    <span>0</span>
+                  </span>
+                  <span class="bottom">0</span>
+                  <span class="bottom-back">
+                    <span>0</span>
+                  </span>
+                </div>
+
+                <div class="figure min min-2">
+                  <span class="top">0</span>
+                  <span class="top-back">
+                    <span>0</span>
+                  </span>
+                  <span class="bottom">0</span>
+                  <span class="bottom-back">
+                    <span>0</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="bloc-time sec" data-init-value="45">
+                <!-- <span class="count-title">Seconds</span> -->
+
+                <div class="figure sec sec-1">
+                  <span class="top">0</span>
+                  <span class="top-back">
+                    <span>0</span>
+                  </span>
+                  <span class="bottom">0</span>
+                  <span class="bottom-back">
+                    <span>0</span>
+                  </span>
+                </div>
+
+                <div class="figure sec sec-2">
+                  <span class="top">0</span>
+                  <span class="top-back">
+                    <span>0</span>
+                  </span>
+                  <span class="bottom">0</span>
+                  <span class="bottom-back">
+                    <span>0</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-top: 2rem;">
+        <div class="col-sm-12 div50">
+          <!-- Third div with 50% height -->
+          <div class="grid"></div>
+          <!-- <span class="animate">Click on image</span> -->
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.17/dist/js/splide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script>
+      function showImage() {
+        window.location.href = "https://adv.businesscloud.xyz/display_layout/default/index.html";
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(showImage, 45000);
+
+        animationUpdate();
+      });
+
+      //Creating 50 thumbnails inside .grid
+      //the images are stored on the server serially. So we can use a loop to generate the HTML.
+      var images = "",
+        count = 9;
+      for (var i = 1; i <= count; i++)
+        images +=
+          '<img class="image_anim image-fluid" src="https://adv.businesscloud.xyz/proxy_server/template/ADD0' +
+          i +
+          '.png" />';
+
+      //appending the images to .grid
+      $(".grid").append(images);
+
+      var d = 0; //delay
+      var ry, tz, s; //transform params
+      setInterval(animationUpdate, 15000);
+      //animation time
+      // $(".grid, .animate").on("click", function () {
+      //fading out the thumbnails with style
+      function animationUpdate() {
+        $(".image_anim")
+          .each(function () {
+            d = Math.random() * 1000; //1ms to 1000ms delay
+            $(this)
+              .delay(d)
+              .animate(
+                { opacity: 0 },
+                {
+                  //while the thumbnails are fading out, we will use the step function to apply some transforms. variable n will give the current opacity in the animation.
+                  step: function (n) {
+                    s = 1 - n; //scale - will animate from 0 to 1
+                    $(this).css("transform", "scale(" + s + ")");
+                  },
+                  duration: 1000,
+                }
+              );
+          })
+          .promise()
+          .done(function () {
+            //after *promising* and *doing* the fadeout animation we will bring the images back
+            storm();
+          });
+      }
+
+      // });
+      //bringing back the images with style
+      function storm() {
+        $(".image_anim").each(function () {
+          d = Math.random() * 1000;
+          $(this)
+            .delay(d)
+            .animate(
+              { opacity: 1 },
+              {
+                step: function (n) {
+                  //rotating the images on the Y axis from 360deg to 0deg
+                  ry = (1 - n) * 360;
+                  //translating the images from 1000px to 0px
+                  tz = (1 - n) * 1000;
+                  //applying the transformation
+                  $(this).css(
+                    "transform",
+                    "rotateY(" + ry + "deg) translateZ(" + tz + "px)"
+                  );
+                },
+                duration: 3000,
+                //some easing fun. Comes from the jquery easing plugin.
+                easing: "easeOutQuint",
+              }
+            );
+        });
+      }
+    </script>
+    <script>
+      // Create Countdown
+      var Countdown = {
+        // Backbone-like structure
+        $el: $(".countdown"),
+
+        // Params
+        countdown_interval: null,
+        total_seconds: 0,
+
+        // Initialize the countdown
+        init: function () {
+          // DOM
+          this.$ = {
+            hours: this.$el.find(".bloc-time.hours .figure"),
+            minutes: this.$el.find(".bloc-time.min .figure"),
+            seconds: this.$el.find(".bloc-time.sec .figure"),
+          };
+
+          // Init countdown values
+          this.values = {
+            hours: this.$.hours.parent().attr("data-init-value"),
+            minutes: this.$.minutes.parent().attr("data-init-value"),
+            seconds: this.$.seconds.parent().attr("data-init-value"),
+          };
+
+          // Initialize total seconds
+          this.total_seconds =
+            this.values.hours * 60 * 60 +
+            this.values.minutes * 60 +
+            this.values.seconds;
+
+          // Animate countdown to the end
+          this.count();
+        },
+
+        count: function () {
+          var that = this,
+            $hour_1 = this.$.hours.eq(0),
+            $hour_2 = this.$.hours.eq(1),
+            $min_1 = this.$.minutes.eq(0),
+            $min_2 = this.$.minutes.eq(1),
+            $sec_1 = this.$.seconds.eq(0),
+            $sec_2 = this.$.seconds.eq(1);
+
+          this.countdown_interval = setInterval(function () {
+            if (that.total_seconds > 0) {
+              --that.values.seconds;
+
+              if (that.values.minutes >= 0 && that.values.seconds < 0) {
+                that.values.seconds = 59;
+                --that.values.minutes;
+              }
+
+              if (that.values.hours >= 0 && that.values.minutes < 0) {
+                that.values.minutes = 59;
+                --that.values.hours;
+              }
+
+              // Update DOM values
+              // Hours
+              that.checkHour(that.values.hours, $hour_1, $hour_2);
+
+              // Minutes
+              that.checkHour(that.values.minutes, $min_1, $min_2);
+
+              // Seconds
+              that.checkHour(that.values.seconds, $sec_1, $sec_2);
+
+              --that.total_seconds;
+            } else {
+              clearInterval(that.countdown_interval);
+            }
+          }, 1000);
+        },
+
+        animateFigure: function ($el, value) {
+          var that = this,
+            $top = $el.find(".top"),
+            $bottom = $el.find(".bottom"),
+            $back_top = $el.find(".top-back"),
+            $back_bottom = $el.find(".bottom-back");
+
+          // Before we begin, change the back value
+          $back_top.find("span").html(value);
+
+          // Also change the back bottom value
+          $back_bottom.find("span").html(value);
+
+          // Then animate
+          TweenMax.to($top, 0.8, {
+            rotationX: "-180deg",
+            transformPerspective: 300,
+            ease: Quart.easeOut,
+            onComplete: function () {
+              $top.html(value);
+
+              $bottom.html(value);
+
+              TweenMax.set($top, { rotationX: 0 });
+            },
+          });
+
+          TweenMax.to($back_top, 0.8, {
+            rotationX: 0,
+            transformPerspective: 300,
+            ease: Quart.easeOut,
+            clearProps: "all",
+          });
+        },
+
+        checkHour: function (value, $el_1, $el_2) {
+          var val_1 = value.toString().charAt(0),
+            val_2 = value.toString().charAt(1),
+            fig_1_value = $el_1.find(".top").html(),
+            fig_2_value = $el_2.find(".top").html();
+
+          if (value >= 10) {
+            // Animate only if the figure has changed
+            if (fig_1_value !== val_1) this.animateFigure($el_1, val_1);
+            if (fig_2_value !== val_2) this.animateFigure($el_2, val_2);
+          } else {
+            // If we are under 10, replace first figure with 0
+            if (fig_1_value !== "0") this.animateFigure($el_1, 0);
+            if (fig_2_value !== val_1) this.animateFigure($el_2, val_1);
+          }
+        },
+      };
+
+      // Let's go !
+      Countdown.init();
+    </script>
+  </body>
+</html>

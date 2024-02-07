@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Responsive Video Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <style>
+      #video-player {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <video id="video-player" autoplay muted="muted"></video>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+      $(document).ready(function () {
+        // Array of video sources
+        var videos = [
+          "videos/video1.mp4",
+          "videos/video2.mp4",
+          "videos/video3.mp4",
+        ];
+
+        // Get video player element
+        var videoPlayer = document.getElementById("video-player");
+
+        // Set first video source
+        var index = 0;
+        videoPlayer.src = videos[0];
+
+        // Play first video
+        videoPlayer.play();
+
+        // Detect when video ends
+        videoPlayer.addEventListener("ended", function () {
+          console.log("ended:" + index);
+          // Check if there are more videos
+          if (index < videos.length - 1) {
+            // Play next video
+            index = parseInt(index) + 1;
+
+            videoPlayer.src = videos[index];
+            videoPlayer.play();
+          } else {
+            // Loop back to first video
+            index = 0;
+            videoPlayer.src = videos[0];
+            videoPlayer.play();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

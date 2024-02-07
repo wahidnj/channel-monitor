@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    /> -->
+    <title>Responsive Video/ Image Display</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      #modal-container {
+        position: fixed;
+        display: table;
+        height: 100%;
+        width: 100%;
+        top: -580px;
+        left: 0;
+        transform: scale(0);
+        z-index: 1;
+      }
+
+      #modal-container.seven {
+        transform: scale(1);
+      }
+      #modal-container.seven .modal-background {
+        background: rgba(0, 0, 0, 0);
+        /* animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; */
+      }
+      #modal-container.seven .modal-background .modal {
+        height: 75px;
+        width: 75px;
+        border-radius: 75px;
+        overflow: hidden;
+        animation: bondJamesBond 1.5s cubic-bezier(0.165, 0.84, 0.44, 1)
+          forwards;
+      }
+      #modal-container.seven .modal-background .modal h2,
+      #modal-container.seven .modal-background .modal p {
+        opacity: 0;
+        position: relative;
+        animation: modalContentFadeIn 0.5s 1.4s linear forwards;
+      }
+      #modal-container.seven.out {
+        animation: slowFade 0.5s 1.5s linear forwards;
+      }
+      #modal-container.seven.out .modal-background {
+        background-color: rgba(0, 0, 0, 0.7);
+        animation: fadeToRed 2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+      #modal-container.seven.out .modal-background .modal {
+        border-radius: 3px;
+        height: 162px;
+        width: 227px;
+        animation: killShot 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+      #modal-container.seven.out .modal-background .modal h2,
+      #modal-container.seven.out .modal-background .modal p {
+        animation: modalContentFadeOut 0.5s 0.5
+          cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+      #modal-container .modal-background {
+        display: table-cell;
+        background: rgba(0, 0, 0, 0.8);
+        text-align: center;
+        vertical-align: middle;
+      }
+      #modal-container .modal-background .modal {
+        /* background: #f40009; */
+
+        background: #000000a3;
+        padding: 50px;
+        display: inline-block;
+        border-radius: 3px;
+        font-weight: 300;
+        position: relative;
+      }
+      #modal-container .modal-background .modal h2 {
+        font-size: 25px;
+        line-height: 30px;
+        margin-bottom: 15px;
+      }
+      #modal-container .modal-background .modal p {
+        font-size: 18px;
+        line-height: 22px;
+      }
+
+      .content h1 {
+        padding: 75px 0 30px 0;
+        text-align: center;
+        font-size: 30px;
+        line-height: 30px;
+      }
+      .content .buttons {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0;
+        text-align: center;
+      }
+      .content .buttons .button {
+        display: inline-block;
+        text-align: center;
+        padding: 10px 15px;
+        margin: 10px;
+        background: red;
+        font-size: 18px;
+        background-color: #efefef;
+        border-radius: 3px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+
+      .text-gradient {
+        /* background: linear-gradient(to right, #ff8a00 0%, #dd4c4f 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        font-weight: 500; */
+        color: white;
+      }
+      .content .buttons .button:hover {
+        color: white;
+        background: #009bd5;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          background: rgba(0, 0, 0, 0);
+        }
+        100% {
+          background: rgba(0, 0, 0, 0.7);
+        }
+      }
+      @keyframes fadeOut {
+        0% {
+          background: rgba(0, 0, 0, 0.7);
+        }
+        100% {
+          background: rgba(0, 0, 0, 0);
+        }
+      }
+
+      @keyframes modalContentFadeIn {
+        0% {
+          opacity: 0;
+          top: -20px;
+        }
+        100% {
+          opacity: 1;
+          top: 0;
+        }
+      }
+      @keyframes modalContentFadeOut {
+        0% {
+          opacity: 1;
+          top: 0px;
+        }
+        100% {
+          opacity: 0;
+          top: -20px;
+        }
+      }
+      @keyframes bondJamesBond {
+        0% {
+          transform: translateX(1000px);
+        }
+        80% {
+          transform: translateX(0px);
+          border-radius: 75px;
+          height: 75px;
+          width: 75px;
+        }
+        90% {
+          border-radius: 3px;
+          height: 182px;
+          width: 247px;
+        }
+        100% {
+          border-radius: 3px;
+          height: 132px;
+          width: 720px;
+        }
+      }
+      @keyframes killShot {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(300px) rotate(45deg);
+          opacity: 0;
+        }
+      }
+      @keyframes fadeToRed {
+        0% {
+          background-color: rgba(255, 255, 255, 0);
+        }
+        100% {
+          background-color: rgba(255, 255, 255, 0);
+        }
+      }
+      @keyframes slowFade {
+        0% {
+          opacity: 1;
+        }
+        99.9% {
+          opacity: 0;
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0);
+        }
+      }
+
+      span {
+        display: block;
+        font-size: 20px;
+        color: #abcd58;
+      }
+
+      #seconds {
+        font-size: 50px;
+        color: #abcd58;
+      }
+      /* .responsive {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+      } */
+
+      @-webkit-keyframes background_color {
+        10% {
+          background-color: #475deb;
+        }
+        20% {
+          background-color: #eb47e0;
+        }
+        30% {
+          background-color: #eb7347;
+        }
+        40% {
+          background-color: #9eeb47;
+        }
+        50% {
+          background-color: #47ebb4;
+        }
+        60% {
+          background-color: #475deb;
+        }
+        70% {
+          background-color: #eb47e0;
+        }
+        80% {
+          background-color: #eb7347;
+        }
+        90% {
+          background-color: #9eeb47;
+        }
+        100% {
+          background-color: #47ebb4;
+        }
+        110% {
+          background-color: #475deb;
+        }
+      }
+      @keyframes background_color {
+        10% {
+          background-color: #475deb;
+        }
+        20% {
+          background-color: #eb47e0;
+        }
+        30% {
+          background-color: #eb7347;
+        }
+        40% {
+          background-color: #9eeb47;
+        }
+        50% {
+          background-color: #47ebb4;
+        }
+        60% {
+          background-color: #475deb;
+        }
+        70% {
+          background-color: #eb47e0;
+        }
+        80% {
+          background-color: #eb7347;
+        }
+        90% {
+          background-color: #9eeb47;
+        }
+        100% {
+          background-color: #47ebb4;
+        }
+        110% {
+          background-color: #475deb;
+        }
+      }
+
+      .countdownTimer {
+        width: 10vmin;
+        height: 10vmin;
+        box-shadow: 0 0 0 1.875vmin,
+          inset 3.75vmin 3.75vmin 7.5vmin rgba(0, 0, 0, 0.125),
+          3.75vmin 3.75vmin 7.5vmin rgba(0, 0, 0, 0.125);
+        font-size: 7vmin;
+        text-shadow: 3.75vmin 3.75vmin 7.5vmin rgba(0, 0, 0, 0.125);
+        position: absolute;
+        top: 50%;
+        left: 12%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: white;
+        border-radius: 50%;
+        font-weight: 700;
+        background-color: #47ebb4;
+        font-family: "Montserrat", sans-serif;
+        -webkit-animation: 10s 0.875s cubic-bezier(0.9, 0, 0.1, 1) forwards
+          background_color;
+        animation: 10s 0.875s cubic-bezier(0.9, 0, 0.1, 1) forwards
+          background_color;
+      }
+      @media (min-width: 600px) {
+        .countdownTimer {
+          width: 12vmin;
+          height: 12vmin;
+          box-shadow: 0 0 0 1.25vmin,
+            inset 2.5vmin 2.5vmin 5vmin rgba(0, 0, 0, 0.125),
+            2.5vmin 2.5vmin 5vmin rgba(0, 0, 0, 0.125);
+          font-size: 7vmin;
+          text-shadow: 2.5vmin 2.5vmin 5vmin rgba(0, 0, 0, 0.125);
+        }
+      }
+      .countdownTimer:before {
+        content: "10";
+        -webkit-animation: 10s 1s forwards timer_countdown,
+          1s 0.875s 10 timer_beat;
+        animation: 10s 1s forwards timer_countdown, 1s 0.875s 10 timer_beat;
+      }
+      @-webkit-keyframes timer_beat {
+        40%,
+        80% {
+          transform: none;
+        }
+        50% {
+          transform: scale(1.125);
+        }
+      }
+      @keyframes timer_beat {
+        40%,
+        80% {
+          transform: none;
+        }
+        50% {
+          transform: scale(1.125);
+        }
+      }
+      @-webkit-keyframes timer_countdown {
+        0% {
+          content: "10";
+        }
+        10% {
+          content: "9";
+        }
+        20% {
+          content: "8";
+        }
+        30% {
+          content: "7";
+        }
+        40% {
+          content: "6";
+        }
+        50% {
+          content: "5";
+        }
+        60% {
+          content: "4";
+        }
+        70% {
+          content: "3";
+        }
+        80% {
+          content: "2";
+        }
+        90% {
+          content: "1";
+        }
+        100% {
+          content: "0";
+        }
+      }
+      @keyframes timer_countdown {
+        0% {
+          content: "10";
+        }
+        10% {
+          content: "9";
+        }
+        20% {
+          content: "8";
+        }
+        30% {
+          content: "7";
+        }
+        40% {
+          content: "6";
+        }
+        50% {
+          content: "5";
+        }
+        60% {
+          content: "4";
+        }
+        70% {
+          content: "3";
+        }
+        80% {
+          content: "2";
+        }
+        90% {
+          content: "1";
+        }
+        100% {
+          content: "0";
+        }
+      }
+      .countdownTimer:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -100;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.125);
+        -webkit-animation: 10s 1s linear forwards timer_indicator;
+        animation: 10s 1s linear forwards timer_indicator;
+      }
+      @-webkit-keyframes timer_indicator {
+        100% {
+          transform: translateY(100%);
+        }
+      }
+      @keyframes timer_indicator {
+        100% {
+          transform: translateY(100%);
+        }
+      }
+
+      .avatar {
+        /* vertical-align: middle; */
+        width: 30px;
+        height: 30px;
+        /* border-radius: 50%; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+
+    <!-- <button onClick="modalOpen()">click me</button> -->
+    <video
+      id="video"
+      width="640"
+      height="480"
+      style="display: none"
+      autoplay
+    ></video>
+    <canvas id="canvas" width="640" height="480" style="display: none"></canvas>
+
+    <div class="modal-container" id="modal-container">
+      <div class="modal-background">
+        <div class="modal">
+          <div class="countdownTimer" style="display: none; width: 12%"></div>
+          <div style="float: right; width: 80%">
+            <h2
+              id="instructions"
+              class="text-gradient"
+              style="text-align: center"
+            >
+              আকর্ষণীয় অফার পেতে
+              <img
+                src="https://adv.businesscloud.xyz/proxy_server/template/avatar/footprint.png"
+                alt="Avatar"
+                class="avatar"
+              />
+              চিহ্নে দাঁড়িয়ে ক্যামেরার দিকে তাকান।
+            </h2>
+
+            <!-- <p class="text-gradient">
+              অনুগ্রহ করে কিছুক্ষন অপেক্ষা করুন, আপনার জন্যে একটি উত্তম অফার
+              তৈরী করা হচ্ছে
+            </p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="modal-invite" id="modal-invite">
+      <div class="modal-background">
+        <div class="modal">
+          <div class="countdownTimer" style="display: none; width: 12%"></div>
+          <div style="float: right; width: 80%">
+            <h2
+              id="instructions"
+              class="text-gradient"
+              style="text-align: center"
+            ></h2>
+            আকর্ষণীয় অফার পেতে * * চিহ্নে দাঁড়িয়ে ক্যামেরার দিকে তাকান।
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+
+    <script>
+      // define an array of video and image URLs
+      const media = [
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video50.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/img1.jpg",
+          duration: 10000,
+        },
+
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video7.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video50.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video9.mp4",
+          duration: null,
+        },
+
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video5.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video50.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video6.mp4",
+          duration: null,
+        },
+
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video7.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video50.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video8.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video7.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video4.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image6.jpg",
+          duration: 7000, // 5 seconds
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video50.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image8.jpg",
+          duration: 7000, // 5 seconds
+        },
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image12.webp",
+          duration: 7000, // 5 seconds
+        },
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image8.jpg",
+          duration: 7000, // 5 seconds
+        },
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image7.jpg",
+          duration: 7000, // 5 seconds
+        },
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video50.mp4",
+          duration: null,
+        },
+
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image8.jpg",
+          duration: 7000, // 5 seconds
+        },
+
+        {
+          type: "image",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/images/image11.webp",
+          duration: 7000, // 5 seconds
+        },
+      ];
+
+      // get references to the container and media elements
+      const container = document.querySelector(".container");
+      let mediaIndex = 0;
+      let mediaElement = null;
+
+      // function to create a new video or image element
+      function createMediaElement(mediaType, mediaUrl) {
+        const element =
+          mediaType === "video"
+            ? document.createElement("video")
+            : document.createElement("div");
+        element.classList.add(mediaType);
+        // element.setAttribute("id", mediaType);
+        if (mediaType === "video") {
+          element.src = mediaUrl;
+          element.autoplay = true;
+          element.preload = "none";
+          element.playsInline = true;
+          element.addEventListener(
+            "loadeddata",
+            function () {
+              console.log("new video");
+            },
+            false
+          );
+          element.muted = false;
+          element.controls = false;
+          element.loop = false;
+          element.addEventListener("ended", handleMediaEnd);
+        } else {
+          element.style.backgroundImage = `url(${mediaUrl})`;
+        }
+        return element;
+      }
+
+      // function to handle the end of a video or image
+      function handleMediaEnd() {
+        // remove the current media element
+        container.removeChild(mediaElement);
+        // increment the media index and wrap around if necessary
+        mediaIndex = (mediaIndex + 1) % media.length;
+        // create a new media element and append it to the container
+        const mediaItem = media[mediaIndex];
+        mediaElement = createMediaElement(mediaItem.type, mediaItem.url);
+
+        container.appendChild(mediaElement);
+        // if the next media item is an image, set a timeout to switch to the next item after its duration
+        if (mediaItem.type === "image") {
+          setTimeout(handleMediaEnd, mediaItem.duration);
+        }
+      }
+
+      // initialize the media player by creating the first media element
+      const firstMediaItem = media[mediaIndex];
+      mediaElement = createMediaElement(
+        firstMediaItem.type,
+        firstMediaItem.url
+      );
+      container.appendChild(mediaElement);
+      // if the first media item is an image, set a timeout to switch to the next item after its duration
+      if (firstMediaItem.type === "image") {
+        setTimeout(handleMediaEnd, firstMediaItem.duration);
+      }
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        try {
+          var cameraStream = null;
+          console.log("ready");
+          const socket = new WebSocket("wss://ai.businesscloud.xyz");
+          var sendStatus = 1;
+          socket.addEventListener("open", (event) => {
+            console.log("connected");
+          });
+          modalOpen();
+          // setTimeout(() => {
+          //   $(".countdownTimer").hide();
+          // }, 10000);
+          // const video = document.getElementById("video");
+          // const canvas = document.getElementById("canvas");
+          // const ctx = canvas.getContext("2d");
+
+          // var mediaSupport = "mediaDevices" in navigator;
+
+          // if (mediaSupport && null == cameraStream) {
+          //   navigator.mediaDevices
+          //     .getUserMedia({
+          //       video: true,
+          //     })
+          //     .then(function (mediaStream) {
+          //       video.srcObject = mediaStream;
+          //       video.play();
+          //       setTimeout(captureFrame, 2000);
+          //     })
+          //     .catch(function (err) {
+          //       console.log("Unable to access camera: " + err.message);
+          //     });
+          // } else {
+          //   alert("Your browser does not support media devices.");
+          //   console.log(mediaSupport);
+          // }
+
+          // function captureFrame() {
+          //   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          //   const dataUrl = canvas.toDataURL("image/jpeg");
+          //   // console.log(dataUrl);
+          //   if (socket) {
+          //     socket.send(dataUrl);
+          //   } else {
+          //     console.log("else");
+          //   }
+
+          //   setTimeout(captureFrame, 1000); // Capture a frame every second
+          // }
+
+          socket.addEventListener("message", (event) => {
+            const data = JSON.parse(event.data);
+            console.log(data);
+            if (data.event == "cam_status_update") {
+              console.log(data.payload);
+              if (data.payload.status == "YES") {
+                sendStatus = 0;
+                if (data.payload.state == 1) {
+                  modalClose();
+
+                  // $("#modal-container .close").click();
+                  console.log("11111111111111111111111111111111");
+
+                  // $("#instructions").text(
+                  //   "অনুগ্রহ করে ক্যামেরায় বিজয় সাইন দেখান।"
+                  //   // অভিনন্দনঃ আপনাকে সনাক্ত করা হয়েছে, অনুগ্রহ করে ক্যামেরাকে বিজয় চিহ্ন দেখান"
+                  // );
+                  $("#instructions").empty();
+                  $("#instructions").append(
+                    'অনুগ্রহ করে ক্যামেরায় <img src="https://adv.businesscloud.xyz/proxy_server/template/avatar/letter-v.png" class="avatar"> বিজয় সাইন দেখান।'
+                  );
+
+                  setTimeout(modalOpen, 1000);
+                } else if (data.payload.state == 0) {
+                  modalClose();
+
+                  // $("#modal-container .close").click();
+                  console.log("00000000");
+
+                  $("#instructions").empty();
+                  $("#instructions").append(
+                    'আকর্ষণীয় অফার পেতে <img src="https://adv.businesscloud.xyz/proxy_server/template/avatar/footprint.png" class="avatar"> চিহ্নে দাঁড়িয়ে ক্যামেরার দিকে তাকান।'
+                  );
+                  setTimeout(modalOpen, 1000);
+                } else if (data.payload.state == 2) {
+                  modalClose();
+
+                  // $("#modal-container .close").click();
+                  console.log("222222222222222222222222222");
+
+                  // $("#instructions").text("অভিনন্দন! প্রক্রিয়াটি সফল হয়েছে।");
+                  $("#instructions").empty();
+                  $("#instructions").append(
+                    'অভিনন্দন! <img src="https://adv.businesscloud.xyz/proxy_server/template/avatar/check-mark.png" class="avatar"> প্রক্রিয়াটি সফল হয়েছে।'
+                  );
+                  setTimeout(modalOpen, 1000);
+                  setTimeout(modalClose, 5000);
+                  setTimeout(openingModalOnRequest, 6000);
+                } else if (data.payload.state == 4) {
+                  modalClose();
+
+                  // $("#modal-container .close").click();
+                  console.log("4444444444444444");
+                  $("#instructions").empty();
+                  $("#instructions").text(
+                    "কিছুক্ষনের মধ্যে আপনার জন্যে সেরা অফারটি প্রদর্শন করা হবে, সাথে থাকার জন্যে ধন্যবাদ"
+                  );
+                  setTimeout(modalOpen, 1000);
+                } else if (data.payload.state == 3) {
+                  if (data.payload.ageGroup == 2) {
+                    window.location.href =
+                      "https://ai.businesscloud.xyz/template4";
+                  } else {
+                    window.location.href =
+                      "https://ai.businesscloud.xyz/template";
+                  }
+                } else if (data.payload.state == -1) {
+                  $(".countdownTimer").hide();
+                  modalClose();
+                  $("#instructions").empty();
+                  $("#instructions").text(
+                    "দুঃখিত, আপনাকে সনাক্ত করা যায়নি, অনুগ্রহ করে আবার চেষ্টা করুন"
+                  );
+                  console.log("You have not followed instruction correctly");
+                  setTimeout(modalOpen, 1000);
+                  setTimeout(modalClose, 11000);
+                } else if (data.payload.state == 0) {
+                  modalClose();
+
+                  console.log("camera not started");
+                  $("#instructions").text("CAMERA PORT NOT FOUND");
+                  setTimeout(modalOpen, 1000);
+                  setTimeout(modalClose, 11000);
+                }
+              } else {
+                console.log("else");
+                sendStatus = 1;
+              }
+            }
+          });
+
+          socket.addEventListener("close", (e) => {
+            console.log("WebSocket Close", e);
+            // const socket = new WebSocket("wss://ai.businesscloud.xyz");
+            // console.log(socket);
+          });
+        } catch (error) {
+          console.log(error.message);
+        }
+      });
+
+      function updateImages(images, timer) {
+        console.log("in update images");
+        if ($(".container").find(".image").get(0)) {
+          console.log("if image");
+          console.log($(".container").find(".image").get(0));
+          console.log("if");
+          images.style.display = "block";
+          $(".image").hide();
+          setTimeout(function () {
+            images.style.display = "none";
+            $(".container .image").show();
+            sendStatus = 1;
+          }, parseInt(timer));
+        } else {
+          console.log("else video");
+          var video = $("video").get(0);
+          if (video.paused) {
+            video.play();
+            $("video").show();
+            images.style.display = "none";
+            sendStatus = 1;
+          } else {
+            $("video").trigger("pause");
+            $("video").hide();
+            images.style.display = "block";
+            setTimeout(function () {
+              images.style.display = "none";
+              $("video").trigger("play");
+              $("video").show();
+              sendStatus = 1;
+            }, parseInt(timer));
+          }
+        }
+      }
+
+      function openingModalOnRequest() {
+        $("#instructions").empty();
+        $("#instructions").append(
+          "অনুগ্রহ করে অপেক্ষা করুন, আপনার বিশেষ অফার তৈরী করা হচ্ছে।"
+        );
+        modalOpen();
+        // setTimeout(modalOpen, 1000);
+      }
+
+      function modalOpen() {
+        console.log("Modal Opening Steps");
+
+        $(".countdownTimer").show();
+        $("#modal-container").removeAttr("class").addClass("seven");
+        $("body").addClass("modal-active");
+      }
+
+      // setInterval(() => {
+      //   console.log("Inviting People");
+      //   // modalCloseInvite();
+      //   $(".countdownTimer").show();
+      //   $("#modal-invite").removeAttr("class").addClass("seven");
+      //   $("body").addClass("modal-active");
+      // }, 10000);
+
+      function modalClose() {
+        console.log("Modal Closing Steps");
+        $(".countdownTimer").hide();
+        $("#modal-container").addClass("out");
+        $("body").removeClass("modal-active");
+      }
+
+      // function modalCloseInvite() {
+      //   console.log("Modal Closing Invite");
+      //   $(".countdownTimer").hide();
+      //   $("#modal-invite").addClass("out");
+      //   $("body").removeClass("modal-active");
+      // }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <title>Responsive Video/ Image Display</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        /* width: 100%;
+        height: 100%; */
+        background-size: cover;
+        background-position: center;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      #modal-container {
+        position: fixed;
+        display: table;
+        height: 100%;
+        width: 100%;
+        top: 580px;
+        left: 0;
+        transform: scale(0);
+        z-index: 1;
+      }
+
+      #modal-container.seven {
+        transform: scale(1);
+      }
+      #modal-container.seven .modal-background {
+        background: rgba(0, 0, 0, 0);
+        /* animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; */
+      }
+      #modal-container.seven .modal-background .modal {
+        height: 75px;
+        width: 75px;
+        border-radius: 75px;
+        overflow: hidden;
+        animation: bondJamesBond 1.5s cubic-bezier(0.165, 0.84, 0.44, 1)
+          forwards;
+      }
+      #modal-container.seven .modal-background .modal h2,
+      #modal-container.seven .modal-background .modal p {
+        opacity: 0;
+        position: relative;
+        animation: modalContentFadeIn 0.5s 1.4s linear forwards;
+      }
+      #modal-container.seven.out {
+        animation: slowFade 0.5s 1.5s linear forwards;
+      }
+      #modal-container.seven.out .modal-background {
+        background-color: rgba(0, 0, 0, 0.7);
+        animation: fadeToRed 2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+      #modal-container.seven.out .modal-background .modal {
+        border-radius: 3px;
+        height: 162px;
+        width: 227px;
+        animation: killShot 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+      #modal-container.seven.out .modal-background .modal h2,
+      #modal-container.seven.out .modal-background .modal p {
+        animation: modalContentFadeOut 0.5s 0.5
+          cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      }
+      #modal-container .modal-background {
+        display: table-cell;
+        background: rgba(0, 0, 0, 0.8);
+        text-align: center;
+        vertical-align: middle;
+      }
+      #modal-container .modal-background .modal {
+        background: #f40009;
+
+        /* background: #f4000900; */
+        padding: 30px;
+        display: inline-block;
+        border-radius: 3px;
+        font-weight: 300;
+        position: relative;
+      }
+      #modal-container .modal-background .modal h2 {
+        font-size: 25px;
+        line-height: 25px;
+        margin-bottom: 15px;
+      }
+      #modal-container .modal-background .modal p {
+        font-size: 18px;
+        line-height: 22px;
+      }
+
+      .content h1 {
+        padding: 75px 0 30px 0;
+        text-align: center;
+        font-size: 30px;
+        line-height: 30px;
+      }
+      .content .buttons {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0;
+        text-align: center;
+      }
+      .content .buttons .button {
+        display: inline-block;
+        text-align: center;
+        padding: 10px 15px;
+        margin: 10px;
+        background: red;
+        font-size: 18px;
+        background-color: #efefef;
+        border-radius: 3px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+
+      .text-gradient {
+        /* background: linear-gradient(to right, #ff8a00 0%, #dd4c4f 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        font-weight: 500; */
+        color: white;
+      }
+      .content .buttons .button:hover {
+        color: white;
+        background: #009bd5;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          background: rgba(0, 0, 0, 0);
+        }
+        100% {
+          background: rgba(0, 0, 0, 0.7);
+        }
+      }
+      @keyframes fadeOut {
+        0% {
+          background: rgba(0, 0, 0, 0.7);
+        }
+        100% {
+          background: rgba(0, 0, 0, 0);
+        }
+      }
+
+      @keyframes modalContentFadeIn {
+        0% {
+          opacity: 0;
+          top: -20px;
+        }
+        100% {
+          opacity: 1;
+          top: 0;
+        }
+      }
+      @keyframes modalContentFadeOut {
+        0% {
+          opacity: 1;
+          top: 0px;
+        }
+        100% {
+          opacity: 0;
+          top: -20px;
+        }
+      }
+      @keyframes bondJamesBond {
+        0% {
+          transform: translateX(1000px);
+        }
+        80% {
+          transform: translateX(0px);
+          border-radius: 75px;
+          height: 75px;
+          width: 75px;
+        }
+        90% {
+          border-radius: 3px;
+          height: 182px;
+          width: 247px;
+        }
+        100% {
+          border-radius: 3px;
+          height: 120px;
+          width: 720px;
+        }
+      }
+      @keyframes killShot {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(300px) rotate(45deg);
+          opacity: 0;
+        }
+      }
+      @keyframes fadeToRed {
+        0% {
+          background-color: rgba(255, 255, 255, 0);
+        }
+        100% {
+          background-color: rgba(255, 255, 255, 0);
+        }
+      }
+      @keyframes slowFade {
+        0% {
+          opacity: 1;
+        }
+        99.9% {
+          opacity: 0;
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0);
+        }
+      }
+      /* .responsive {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+      } */
+
+      .video video,
+      .overlay img {
+        width: 100px;
+        height: 100px;
+        position: fixed;
+        top: 1110px;
+        left: 560px;
+        /* object-fit: cover; */
+      }
+
+      .overlay img {
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="overlay" style="display: none" id="overlayImage">
+        <img
+          src="https://adv.businesscloud.xyz/proxy_server/template/qrcode.png"
+        />
+      </div>
+    </div>
+
+    <div id="modal-container">
+      <div class="modal-background">
+        <div class="modal">
+          <h2 id="instructions" class="text-gradient">
+            SCAN AND GRAB YOUR OFFER
+          </h2>
+          <p class="text-gradient">THANK YOU FOR BEING WITH US</p>
+          <!-- <img
+            class="responsive"
+            src="https://media.giphy.com/media/ZqlvCTNHpqrio/giphy.gif"
+            alt="Example gif"
+          /> -->
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <script>
+      // define an array of video and image URLs
+      const media = [
+        {
+          type: "video",
+          url: "https://adv.businesscloud.xyz/proxy_server/template/videos/video1.mp4",
+          duration: null,
+        },
+      ];
+
+      // get references to the container and media elements
+      const container = document.querySelector(".container");
+      let mediaIndex = 0;
+      let mediaElement = null;
+
+      // function to create a new video or image element
+      function createMediaElement(mediaType, mediaUrl) {
+        const element =
+          mediaType === "video"
+            ? document.createElement("video")
+            : document.createElement("div");
+        element.classList.add(mediaType);
+        // element.setAttribute("id", mediaType);
+        if (mediaType === "video") {
+          element.src = mediaUrl;
+          element.autoplay = true;
+          element.preload = "none";
+          element.playsInline = true;
+          element.addEventListener(
+            "ended",
+            function () {
+              console.log("new video ended");
+              window.location.href = "https://ai.businesscloud.xyz/template2";
+            },
+            false
+          );
+          element.muted = false;
+          element.controls = false;
+          element.loop = false;
+          element.addEventListener("ended", handleMediaEnd);
+        } else {
+          element.style.backgroundImage = `url(${mediaUrl})`;
+        }
+        return element;
+      }
+
+      // function to handle the end of a video or image
+      function handleMediaEnd() {
+        // remove the current media element
+        container.removeChild(mediaElement);
+        // increment the media index and wrap around if necessary
+        mediaIndex = (mediaIndex + 1) % media.length;
+        // create a new media element and append it to the container
+        const mediaItem = media[mediaIndex];
+        mediaElement = createMediaElement(mediaItem.type, mediaItem.url);
+
+        container.appendChild(mediaElement);
+        // if the next media item is an image, set a timeout to switch to the next item after its duration
+        if (mediaItem.type === "image") {
+          setTimeout(handleMediaEnd, mediaItem.duration);
+        }
+      }
+
+      // initialize the media player by creating the first media element
+      const firstMediaItem = media[mediaIndex];
+      mediaElement = createMediaElement(
+        firstMediaItem.type,
+        firstMediaItem.url
+      );
+      container.appendChild(mediaElement);
+      // if the first media item is an image, set a timeout to switch to the next item after its duration
+      if (firstMediaItem.type === "image") {
+        setTimeout(handleMediaEnd, firstMediaItem.duration);
+      }
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        console.log("ready!");
+        modalOpen();
+        setTimeout(showImage, 2000);
+      });
+      function modalOpen() {
+        console.log("Modal Opening");
+        $("#modal-container").removeAttr("class").addClass("seven");
+        $("body").addClass("modal-active");
+      }
+
+      function showImage() {
+        // console.log("Modal Opening");
+        $("#overlayImage").show();
+      }
+
+      function modalClose() {
+        console.log("Modal Closing");
+        $("#modal-container").addClass("out");
+        $("body").removeClass("modal-active");
+      }
+    </script>
+  </body>
+</html>

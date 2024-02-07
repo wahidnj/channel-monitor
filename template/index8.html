@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Responsive Video/Image Player</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .container,
+      .container2 {
+        position: relative;
+        height: 50vh;
+        width: 100%;
+        overflow: hidden;
+      }
+      .container video,
+      .container img,
+      .container2 video,
+      .container2 img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 100%;
+        min-width: 100%;
+        width: auto;
+        height: auto;
+      }
+
+      .video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+    <div class="container2"></div>
+    <script>
+      const media = [
+        {
+          type: "video",
+          url: "http://128.199.176.47:8089/proxy_server/template/videos/video4.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://www.w3schools.com/html/pic_trulli.jpg",
+          duration: 5000, // 5 seconds
+        },
+        {
+          type: "video",
+          url: "https://www.w3schools.com/html/mov_bbb.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "http://128.199.176.47:8089/proxy_server/template/videos/video4.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://www.w3schools.com/html/pic_trulli.jpg",
+          duration: 3000,
+        },
+        {
+          type: "video",
+          url: "https://www.w3schools.com/html/movie.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "http://128.199.176.47:8089/proxy_server/template/videos/video4.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://www.w3schools.com/html/img_chania.jpg",
+          duration: 3000,
+        },
+        {
+          type: "video",
+          url: "https://www.w3schools.com/html/mov_bbb.mp4",
+          duration: null,
+        },
+        {
+          type: "video",
+          url: "http://128.199.176.47:8089/proxy_server/template/videos/video4.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "https://www.w3schools.com/html/img_girl.jpg",
+          duration: 3000,
+        },
+      ];
+
+      // get references to the container and media elements
+      const container = document.querySelector(".container");
+
+      let mediaIndex = 0;
+      let mediaElement = null;
+
+      // function to create a new video or image element
+      function createMediaElement(mediaType, mediaUrl) {
+        const element =
+          mediaType === "video"
+            ? document.createElement("video")
+            : document.createElement("div");
+        element.classList.add(mediaType);
+        if (mediaType === "video") {
+          element.src = mediaUrl;
+          element.autoplay = true;
+          element.muted = true;
+          element.controls = false;
+          element.preload = "none";
+          element.loop = false;
+          element.addEventListener("ended", handleMediaEnd);
+        } else {
+          element.style.backgroundImage = `url(${mediaUrl})`;
+        }
+        return element;
+      }
+
+      // function to handle the end of a video or image
+      function handleMediaEnd() {
+        // remove the current media element
+        container.removeChild(mediaElement);
+        // increment the media index and wrap around if necessary
+        mediaIndex = (mediaIndex + 1) % media.length;
+        // create a new media element and append it to the container
+        const mediaItem = media[mediaIndex];
+        mediaElement = createMediaElement(mediaItem.type, mediaItem.url);
+        container.appendChild(mediaElement);
+        // if the next media item is an image, set a timeout to switch to the next item after its duration
+        if (mediaItem.type === "image") {
+          setTimeout(handleMediaEnd, mediaItem.duration);
+        }
+      }
+
+      // initialize the media player by creating the first media element
+      const firstMediaItem = media[mediaIndex];
+      mediaElement = createMediaElement(
+        firstMediaItem.type,
+        firstMediaItem.url
+      );
+      container.appendChild(mediaElement);
+      // if the first media item is an image, set a timeout to switch to the next item after its duration
+      if (firstMediaItem.type === "image") {
+        setTimeout(handleMediaEnd, firstMediaItem.duration);
+      }
+    </script>
+
+    <script>
+      const media2 = [
+        {
+          type: "image",
+          url: "http://128.199.176.47:8089/proxy_server/template/images/1.png",
+          duration: 5000, // 5 seconds
+        },
+        {
+          type: "video",
+          url: "http://128.199.176.47:8089/proxy_server/template/videos/video1.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "http://128.199.176.47:8089/proxy_server/template/images/1.png",
+          duration: 5000, // 5 seconds
+        },
+        {
+          type: "video",
+          url: "http://128.199.176.47:8089/proxy_server/template/videos/video2.mp4",
+          duration: null,
+        },
+        {
+          type: "image",
+          url: "http://128.199.176.47:8089/proxy_server/template/images/2.png",
+          duration: 5000, // 5 seconds
+        },
+        {
+          type: "image",
+          url: "http://128.199.176.47:8089/proxy_server/template/images/3.png",
+          duration: 5000, // 5 seconds
+        },
+        {
+          type: "image",
+          url: "http://128.199.176.47:8089/proxy_server/template/images/4.png",
+          duration: 5000, // 5 seconds
+        },
+      ];
+
+      // get references to the container and media elements
+
+      const container2 = document.querySelector(".container2");
+      let mediaIndex2 = 0;
+      let mediaElement2 = null;
+
+      // function to create a new video or image element
+      function createMediaElement2(mediaType, mediaUrl) {
+        const element =
+          mediaType === "video"
+            ? document.createElement("video")
+            : document.createElement("div");
+        element.classList.add(mediaType);
+        if (mediaType === "video") {
+          element.src = mediaUrl;
+          element.autoplay = true;
+          element.muted = true;
+          element.preload = "none";
+          element.controls = false;
+          element.loop = false;
+          element.addEventListener("ended", handleMediaEnd2);
+        } else {
+          element.style.backgroundImage = `url(${mediaUrl})`;
+        }
+        return element;
+      }
+
+      // function to handle the end of a video or image
+      function handleMediaEnd2() {
+        // remove the current media element
+        container2.removeChild(mediaElement2);
+        // increment the media index and wrap around if necessary
+        mediaIndex2 = (mediaIndex2 + 1) % media2.length;
+        // create a new media element and append it to the container
+        const mediaItem2 = media2[mediaIndex2];
+        mediaElement2 = createMediaElement2(mediaItem2.type, mediaItem2.url);
+        container2.appendChild(mediaElement2);
+        // if the next media item is an image, set a timeout to switch to the next item after its duration
+        if (mediaItem2.type === "image") {
+          setTimeout(handleMediaEnd2, mediaItem2.duration);
+        }
+      }
+
+      // initialize the media player by creating the first media element
+      const firstMediaItem2 = media2[mediaIndex2];
+      mediaElement2 = createMediaElement2(
+        firstMediaItem2.type,
+        firstMediaItem2.url
+      );
+      container2.appendChild(mediaElement2);
+      // if the first media item is an image, set a timeout to switch to the next item after its duration
+      if (firstMediaItem2.type === "image") {
+        setTimeout(handleMediaEnd2, firstMediaItem2.duration);
+      }
+    </script>
+  </body>
+</html>
